@@ -1,5 +1,7 @@
 package spring.db.com.mysqlmongo.dto;
 
+
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.io.Writer;
@@ -12,12 +14,13 @@ import java.time.LocalDateTime;
 public class BoardDTO {
     private Long id;
 
+    @NotBlank(message = "write")
     private String writer;
-
+    @NotBlank(message = "title")
     private String title;
-
+    @NotBlank(message = "board")
     private String board;
-
+    @NotBlank(message = "content")
     private String content;
 
     private int hits;
