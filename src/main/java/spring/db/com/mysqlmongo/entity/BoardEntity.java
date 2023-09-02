@@ -9,13 +9,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.Date;
 
-@Entity
 @Table(name = "board")
 @EntityListeners({AuditingEntityListener.class, LoggingApplicationListener.class})
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
-        allowGetters = true)
 @Getter
 @Setter
+@Entity
 public class BoardEntity {
 
     @Id
@@ -58,6 +56,12 @@ public class BoardEntity {
     public void onPreRemove() {
         // 삭제 전에 실행될 로깅 로직
         System.out.println("Entity is being deleted: " + this.toString());
+    }
+
+    @PostPersist
+    public void onPostPersist() {
+        // 엔터티 생성 후에 실행될 로깅 로직
+        System.out.println("Entity has been created: " + this.toString());
     }
 
 }

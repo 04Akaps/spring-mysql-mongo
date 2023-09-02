@@ -26,7 +26,7 @@ public class Response {
         return new ResponseEntity<>(Response.getHashMap(errors, HttpStatus.BAD_REQUEST, object), HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<Object> failed(String message, Object object) {
+    public static ResponseEntity<Object> failed(String message, Object object) {
         // 그냥 실패시 사용되는 Response
         return new ResponseEntity<>(Response.getHashMap(message, HttpStatus.BAD_REQUEST, object), HttpStatus.BAD_REQUEST);
     }
