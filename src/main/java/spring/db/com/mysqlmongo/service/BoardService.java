@@ -7,10 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import spring.db.com.mysqlmongo.controller.BoardController;
 import spring.db.com.mysqlmongo.entity.BoardEntity;
 import spring.db.com.mysqlmongo.repository.BoardRepository;
-import spring.db.com.mysqlmongo.response.ResourceNotFoundException;
 import spring.db.com.mysqlmongo.response.Response;
 
 import java.util.Collections;
@@ -41,12 +39,16 @@ public class BoardService {
 
     public ResponseEntity<Object> findBoardByPrId(Long boardId) {
         Optional<BoardEntity> boardOptional = boardRepository.findById(boardId);
-
         if (boardOptional.isPresent()){
             return Response.success("findBoardByPrId Success", boardOptional.get());
         }else {
             return Response.failed("Board Not Found", null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public ResponseEntity<Object> findBoardByTitle(String title) {
+        List<BoardEntity> boardList = boardRepository.findByTitle(title);
+        return Response.success("findBoardByPrId Success", boardList);
     }
 
     public ResponseEntity<Object> saveBoard(BoardEntity board) {

@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spring.db.com.mysqlmongo.entity.BoardEntity;
-import spring.db.com.mysqlmongo.response.ResourceNotFoundException;
 import spring.db.com.mysqlmongo.response.Response;
 import spring.db.com.mysqlmongo.service.BoardService;
 
@@ -48,6 +47,13 @@ public class BoardController {
     @GetMapping("/find-all")
     public ResponseEntity<Object> findAllBoard(){
         return boardService.findAll();
+    }
+
+    @GetMapping("/find-by-title/{title}")
+    public  ResponseEntity<Object> getBoardByTitle(
+            @PathVariable(value = "title") String title
+    ) {
+        return boardService.findBoardByTitle(title);
     }
 
     @PutMapping("/notes/{id}")
