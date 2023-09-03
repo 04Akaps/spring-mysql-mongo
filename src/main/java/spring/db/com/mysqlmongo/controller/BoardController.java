@@ -1,6 +1,9 @@
 package spring.db.com.mysqlmongo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
@@ -25,7 +28,55 @@ public class BoardController {
         if (bindingResult.hasErrors()) {
             return Response.validFailed(bindingResult, null);
         }
-        return boardService.findBoardByPrId(1L);
+        return boardService.saveBoard(board);
     }
+
+    @GetMapping("board-paging/{page}/{size}")
+    public ResponseEntity<Object> getBoardByPaging(
+            @PathVariable(value = "page") int page,
+            @PathVariable(value = "size") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return boardService.findAllByPaging(pageable);
+    }
+
+    @GetMapping("/board/{id}")
+    public ResponseEntity<Object> getBoardById(@PathVariable(value = "id") Long boardId) {
+        return boardService.findBoardByPrId(boardId);
+    }
+
+    @GetMapping("/find-all")
+    public ResponseEntity<Object> findAllBoard(){
+        return boardService.findAll();
+    }
+
+    @PutMapping("/notes/{id}")
+    public ResponseEntity<Object> updateBoard(
+            @PathVariable(value = "id") Long boardId,
+            @Valid @RequestBody BoardEntity board)
+    {
+
+        ResponseEntity<Object> responseEntity = boardService.findBoardByPrId(boardId);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK){
+            BoardEntity existingBoard = (BoardEntity) responseEntity.getBody();
+            return boardService.updateBoard(existingBoard, board);
+        }else {
+            return responseEntity;
+        }
+    }
+
+    @DeleteMapping("/notes/{id}")
+    public ResponseEntity<Object> deleteBoard(
+            @PathVariable(value = "id") Long boardId
+    ) {
+        return boardService.deleteBoard(boardId);
+    }
+
+
+
+
+
+
 
 }

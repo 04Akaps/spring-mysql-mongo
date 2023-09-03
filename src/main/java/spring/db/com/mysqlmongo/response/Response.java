@@ -7,7 +7,7 @@ import org.springframework.validation.BindingResult;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Response {
+public class Response extends RuntimeException {
 
     public static ResponseEntity<Object> success(String message, Object object) {
         // 성공시 사용되는 Response
@@ -26,9 +26,9 @@ public class Response {
         return new ResponseEntity<>(Response.getHashMap(errors, HttpStatus.BAD_REQUEST, object), HttpStatus.BAD_REQUEST);
     }
 
-    public static ResponseEntity<Object> failed(String message, Object object) {
+    public static ResponseEntity<Object> failed(String message, Object object, HttpStatus statusCode) {
         // 그냥 실패시 사용되는 Response
-        return new ResponseEntity<>(Response.getHashMap(message, HttpStatus.BAD_REQUEST, object), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(Response.getHashMap(message, statusCode, object), statusCode);
     }
 
     private static Map<String, Object> getHashMap(Object message, HttpStatus status, Object result) {
