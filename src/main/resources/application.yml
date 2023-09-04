@@ -18,3 +18,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+  data:
+    mongodb:
+      host: "hojin:1111@msggo.wbwdsv8.mongodb.net"
